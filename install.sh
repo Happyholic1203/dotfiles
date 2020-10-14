@@ -147,6 +147,10 @@ function install_prerequisites {
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
         ~/.fzf/install --all
     fi
+
+    if ! has lazygit; then
+        curl -sSL https://github.com/jesseduffield/lazygit/releases/download/v0.23.6/lazygit_0.23.6_Linux_x86_64.tar.gz | sudo tar -C /usr/local/bin -zxv
+    fi
 }
 
 install_jsxhint() {
