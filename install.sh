@@ -203,6 +203,7 @@ install_ranger() {
 }
 
 install_bashit() {
+    mv ~/.bashrc ~/.bashrc.before-bash-it.bak
     pushd ~/.bash-it
     ./install.sh -s
     . ~/.bash-it/bash_it.sh
