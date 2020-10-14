@@ -7,6 +7,7 @@ Usage: $0 [OPTIONS] [vim|restore]
 Options:
     -h|--help: show this usage
     --with-ycm: install with YCM support
+    --with-bashit: install with bash-it support
     --update: update submodules to latest versions
     --with-jsxhint: install with jsxhint support
     --with-ranger: install with ranger support
@@ -201,10 +202,22 @@ install_ranger() {
     rm -rf $d
 }
 
+install_bashit() {
+    pushd ~/.bash-it
+    ./install.sh -s
+    . ~/.bash-it/bash_it.sh
+    for plugin in alias-completion autocd base fzf gitstatus short-docker short-git; do
+        bash-it enable plugin $plugin
+    done
+    bash-it enable alias vim
+    popd
+}
+
 main() {
     OS=`get_unified_os_name`
 
     opt_with_ycm=0
+    opt_with_bashit=0
     opt_update=0
     opt_with_jsxhint=0
     opt_with_ranger=0
@@ -221,6 +234,9 @@ main() {
                 ;;
             --update)
                 opt_update=1
+                ;;
+            --with-bashit)
+                opt_with_bashit=1
                 ;;
             --with-jsxhint)
                 opt_with_jsxhint=1
@@ -278,6 +294,14 @@ main() {
         git rm -r _vim/bundle/YouCompleteMe >/dev/null 2>&1 || true
     fi
 
+    if [ $opt_with_bashit -eq 1 ] && [ ! -d ~/.bash-it ]; then
+        info 'Including bash-it submodule...'
+    else
+        info 'Excluding bash-it submodule...'
+        git submodule deinit _bash-it >/dev/null 2>&1 || true
+        git rm -r _bash-it >/dev/null 2>&1 || true
+    fi
+
     submodules=`git submodule | awk '{print $2}'`
     for x in _vim/bundle/*; do
         if ! echo "$submodules" | grep $x >/dev/null 2>&1; then
@@ -298,6 +322,10 @@ main() {
 
     if [ $opt_with_ranger -eq 1 ] && ! has ranger; then
         install_ranger
+    fi
+
+    if [ $opt_with_bashit -eq 1 ]; then
+        install_bashit
     fi
 
     if [ $opt_update -eq 1 ]; then

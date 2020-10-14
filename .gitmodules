@@ -100,3 +100,6 @@
 [submodule "_vim/bundle/YouCompleteMe"]
 	path = _vim/bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "_bash-it"]
+	path = _bash-it
+	url = https://github.com/Happyholic1203/bash-it.git
