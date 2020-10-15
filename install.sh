@@ -129,7 +129,7 @@ function install_prerequisites {
 
         # install fd & rg
         tmp=$(mktemp -d)
-        for repo in BurntSushi/ripgrep sharkdp/fd; do
+        for repo in BurntSushi/ripgrep sharkdp/fd sharkdp/bat; do
             name=$(basename $repo)
             has $name && continue
             url=$(curl -s https://api.github.com/repos/$repo/releases/latest|\
